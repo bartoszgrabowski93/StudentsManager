@@ -78,9 +78,18 @@ namespace StudentsManager.Controllers
         public IActionResult Create(Studenci nowyStudent)
         {
             // Walidacja! - po stronie servera - MUSI BYĆ ZAWSZE!!!
-            
+            if (ModelState.IsValid)
+            {
+                // zapisz do bazy danych 
+                // powrót do listy studentów
+                return RedirectToAction("Index");
+            }
+
+            // dane są niepoprawne
+            // wyświetl użytkownikowi błędy
+
             // Dodanie studenta do bazy danych
-            return RedirectToAction("Index");
+            return View(nowyStudent);
         }
 
         public IActionResult Delete()
