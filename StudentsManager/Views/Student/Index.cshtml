@@ -4,7 +4,9 @@
 <p>
     @ViewBag.Opis
 </p>
-
+<a href="/student/create" class="btn">Dodaj studenta</a>
+<a href="/student/delete" class="btn">Usuń studenta</a>
+<a href="/student/edit" class="btn">Zmień dane studenta</a>
 <table class="striped">
     <thead>
         <tr>
@@ -22,10 +24,10 @@
                 <td>@student.Name</td>
                 <td>@student.LastName</td>
                 <td>@student.Email</td>
-                <td>@student.BirthDate</td>
+                <td>@student.IndexNumber</td>
                 <td>
                     <a class="waves-effect waves-light btn-small"
-                       href="/students/details/@student.IdStudent">Wyswietl</a>
+                       href="/student/details/@student.IdStudent">Wyswietl</a>
                 </td>
             </tr>
         }

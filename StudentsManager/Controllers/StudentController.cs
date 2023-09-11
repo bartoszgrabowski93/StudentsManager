@@ -16,7 +16,7 @@ namespace StudentsManager.Controllers
                 Name = "John",
                 LastName = "Smith",
                 Email = "jsmith@googlemail.com",
-                BirthDate = DateTime.Now
+                IndexNumber = "pd0001"
             };
             var s2 = new Studenci
             {
@@ -24,7 +24,7 @@ namespace StudentsManager.Controllers
                 Name = "Ann",
                 LastName = "Long",
                 Email = "ahat@googlemail.com",
-                BirthDate = DateTime.Now
+                IndexNumber = "pd0002"
             };
             list.Add(s1);
             list.Add(s2);
@@ -37,12 +37,6 @@ namespace StudentsManager.Controllers
             // 2.2 Dane silnie typowane - trzeba dodać do widoku "@model List<Studenci>"
             return View(list);
         }
-
-
-
-
-
-
 
         public IActionResult Details(int id)
         {
@@ -57,7 +51,7 @@ namespace StudentsManager.Controllers
                     Name = "John",
                     LastName = "Smith",
                     Email = "jsmith@googlemail.com",
-                    BirthDate = DateTime.Now
+                    IndexNumber = "pd0001"
                 };
             }
             else if (id == 2)
@@ -68,11 +62,34 @@ namespace StudentsManager.Controllers
                     Name = "Ann",
                     LastName = "Long",
                     Email = "ahat@googlemail.com",
-                    BirthDate = DateTime.Now
+                    IndexNumber = "pd0002"
                 };
             }
 
             return View(st);
+        }
+        // Wyswietlanie pustego formularza
+        public IActionResult Create()
+        {
+            return View();
+        }
+        // Wysylanie danych z wypelnionego formularza za pomoca HttpPost
+        [HttpPost]
+        public IActionResult Create(Studenci nowyStudent)
+        {
+            // Walidacja! - po stronie servera - MUSI BYĆ ZAWSZE!!!
+            
+            // Dodanie studenta do bazy danych
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete()
+        {
+            return View();
+        }
+        public IActionResult Edit()
+        {
+            return View();
         }
     }
 }
