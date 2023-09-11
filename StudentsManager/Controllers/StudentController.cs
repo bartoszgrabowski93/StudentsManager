@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsManager.Models;
+using StudentsManager.ViewModels;
 
 namespace StudentsManager.Controllers
 {
@@ -11,11 +12,16 @@ namespace StudentsManager.Controllers
             // 1. Pobieranie danych - zazwyczaj z db
             var dbContext = new StudenciDbContext();
             var studenci = dbContext.Studenci
-                    .Where(p1 => string.IsNullOrWhiteSpace(query) || p1.LastName.Contains(query) || p1.Name.Contains(query))
+                    .Where(p1 => string.IsNullOrWhiteSpace(query) || p1.LastName.Contains(query) || p1.Name.Contains(query) || p1.IndexNumber.Contains(query))
                     .OrderBy(p1 => p1.LastName)
                     .ThenBy(p1 => p1.Name)
                     .ToList();
-            return View(studenci);
+
+            var vm = new StudenciIndexViewModel();
+            vm.Students = studenci;
+            vm.Query = query;
+
+            return View(vm);
                      
             
         }
@@ -24,31 +30,10 @@ namespace StudentsManager.Controllers
         {
             // 1. Z pomocą ID pobrać z BD dane studenta
             // Edit -> Advanced -> Format Document
-            Students st = null;
-            if (id == 1)
-            {
-                st = new Students
-                {
-                    StudentId = 1,
-                    Name = "John",
-                    LastName = "Smith",
-                    Email = "jsmith@googlemail.com",
-                    IndexNumber = "pd0001"
-                };
-            }
-            else if (id == 2)
-            {
-                st = new Students
-                {
-                    StudentId = 2,
-                    Name = "Ann",
-                    LastName = "Long",
-                    Email = "ahat@googlemail.com",
-                    IndexNumber = "pd0002"
-                };
-            }
-
-            return View(st);
+            var dbContext = new StudenciDbContext();
+            var student = dbContext.Studenci
+                .FirstOrDefault(s => s.StudentId == id);
+            return View(student);
         }
         // Wyswietlanie pustego formularza
         public IActionResult Create()
@@ -79,13 +64,41 @@ namespace StudentsManager.Controllers
             return View(nowyStudent);
         }
 
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return View();
+            var dbContext = new StudenciDbContext();
+            var studentToDelete = new Students();
+            studentToDelete.StudentId = id;
+
+            dbContext.Studenci.Attach(studentToDelete);
+            dbContext.Studenci.Remove(studentToDelete);
+            dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
         }
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            return View();
+            var dbContext = new StudenciDbContext();
+            var studentDoEdycji = dbContext.Studenci
+                .FirstOrDefault(s => s.StudentId == id);
+
+            return View(studentDoEdycji);
+        }
+        [HttpPost]
+        public IActionResult Edit(Students edytowanyStudent)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var dbContext = new StudenciDbContext();
+                dbContext.Studenci.Attach(edytowanyStudent);
+                dbContext.Studenci.Update(edytowanyStudent);
+                dbContext.SaveChanges();
+                         
+                return RedirectToAction("Index");
+            }
+                       
+            return View(edytowanyStudent);
         }
     }
 }
