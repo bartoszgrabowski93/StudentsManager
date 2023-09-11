@@ -1,17 +1,33 @@
-﻿
+﻿@model List<Studenci>
 
-<h1>To jest indeks</h1>
+@{
+    Layout = null;
+}
+
+<h1>To jest lista studentów</h1>
 <p>
-    Ala ma kota i psa
+    @ViewBag.Opis
 </p>
-<p>
-@*Komentarz*@
-</p>
-<p>
-    <ul>
-        @for(int i=0 ;i<10; i++)
-            {
-                <li>Element @i</li>
-            }
-    </ul>
-</p>
+
+<table class="striped">
+    <thead>
+        <tr>
+            <td>Imię</td>
+            <td>Nazwisko</td>
+            <td>Email</td>
+            <td>Data urodzenia</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.LastName</td>
+                <td>@student.Email</td>
+                <td>@student.BirthDate</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
