@@ -5,49 +5,31 @@ namespace StudentsManager.Controllers
 {
     public class StudentController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string query)
         {
-
-            // 1. Pobieranie danych - zazwyczaj z db
-            var list = new List<Studenci>();
-            var s1 = new Studenci
-            {
-                IdStudent = 1,
-                Name = "John",
-                LastName = "Smith",
-                Email = "jsmith@googlemail.com",
-                IndexNumber = "pd0001"
-            };
-            var s2 = new Studenci
-            {
-                IdStudent = 2,
-                Name = "Ann",
-                LastName = "Long",
-                Email = "ahat@googlemail.com",
-                IndexNumber = "pd0002"
-            };
-            list.Add(s1);
-            list.Add(s2);
-
-            // 2. Dwie metody na przekazanie danych do widoku
-
-            // 2.1 Użycie ViewBag - mniej preferowane, ponieważ jest typem dynamicznym
             ViewBag.Opis = "Ponizej znajduje sie lista studentow";
-
-            // 2.2 Dane silnie typowane - trzeba dodać do widoku "@model List<Studenci>"
-            return View(list);
+            // 1. Pobieranie danych - zazwyczaj z db
+            var dbContext = new StudenciDbContext();
+            var studenci = dbContext.Studenci
+                    .Where(p1 => string.IsNullOrWhiteSpace(query) || p1.LastName.Contains(query) || p1.Name.Contains(query))
+                    .OrderBy(p1 => p1.LastName)
+                    .ThenBy(p1 => p1.Name)
+                    .ToList();
+            return View(studenci);
+                     
+            
         }
 
         public IActionResult Details(int id)
         {
             // 1. Z pomocą ID pobrać z BD dane studenta
             // Edit -> Advanced -> Format Document
-            Studenci st = null;
+            Students st = null;
             if (id == 1)
             {
-                st = new Studenci
+                st = new Students
                 {
-                    IdStudent = 1,
+                    StudentId = 1,
                     Name = "John",
                     LastName = "Smith",
                     Email = "jsmith@googlemail.com",
@@ -56,9 +38,9 @@ namespace StudentsManager.Controllers
             }
             else if (id == 2)
             {
-                st = new Studenci
+                st = new Students
                 {
-                    IdStudent = 2,
+                    StudentId = 2,
                     Name = "Ann",
                     LastName = "Long",
                     Email = "ahat@googlemail.com",
@@ -75,12 +57,17 @@ namespace StudentsManager.Controllers
         }
         // Wysylanie danych z wypelnionego formularza za pomoca HttpPost
         [HttpPost]
-        public IActionResult Create(Studenci nowyStudent)
+        public IActionResult Create(Students nowyStudent)
         {
             // Walidacja! - po stronie servera - MUSI BYĆ ZAWSZE!!!
             if (ModelState.IsValid)
             {
                 // zapisz do bazy danych 
+
+                var dbContext = new StudenciDbContext();
+                dbContext.Studenci.Add(nowyStudent);
+                dbContext.SaveChanges();
+
                 // powrót do listy studentów
                 return RedirectToAction("Index");
             }

@@ -1,4 +1,4 @@
-﻿@model List<Studenci>
+﻿@model List<Students>
 
 <h1>To jest lista studentów</h1>
 <p>
@@ -7,13 +7,21 @@
 <a href="/student/create" class="btn">Dodaj studenta</a>
 <a href="/student/delete" class="btn">Usuń studenta</a>
 <a href="/student/edit" class="btn">Zmień dane studenta</a>
+
+<form method="get">
+    <label for="query">Szukaj:</label>
+    <input type="text" id="query" name="query" />
+    <button type="submit">Szukaj</button>
+</form>
+
+
 <table class="striped">
     <thead>
         <tr>
             <td>Imię</td>
             <td>Nazwisko</td>
             <td>Email</td>
-            <td>Data urodzenia</td>
+            <td>Numer indeksu</td>
             <td>Szczegoly</td>
         </tr>
     </thead>
@@ -27,7 +35,7 @@
                 <td>@student.IndexNumber</td>
                 <td>
                     <a class="waves-effect waves-light btn-small"
-                       href="/student/details/@student.IdStudent">Wyswietl</a>
+                       href="/student/details/@student.StudentId">Wyswietl</a>
                 </td>
             </tr>
         }
