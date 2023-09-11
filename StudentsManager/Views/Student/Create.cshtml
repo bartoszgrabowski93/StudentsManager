@@ -1,11 +1,23 @@
-﻿
+﻿@model Studenci
 <h1>Dodaj studenta</h1>
 
 <form method="post">
-<input type="text" id="Name" name="Name"/>
-<input type="text" id="LastName" name="LastName"/>
-<input type="text" id="Email" name="Email"/>
-<input type="text" id="BirthDate" name="BirthDate"/>
+    <div class="input-field col s6">
+        <input id="Name" name="Name" type="text" class="validate">
+        <label for="Name">Imię</label>
+    </div>
+    <div class="input-field col s6">
+        <input id="LastName" name="LastName" type="text" class="validate">
+        <label for="LastName">Nazwisko</label>
+    </div>
+    <div class="input-field col s6">
+        <input id="Email" name="Email" type="text" class="validate">
+        <label for="Email">E-mail</label>
+    </div>
+    <div class="input-field col s6">
+        <input id="IndexNumber" name="IndexNumber" type="text" class="validate">
+        <label for="IndexNumber">Numer indeksu</label>
+    </div>
 
 <button type="submit">Zapisz</button>
 </form>
