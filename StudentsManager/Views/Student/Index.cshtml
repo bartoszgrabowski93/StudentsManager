@@ -1,9 +1,5 @@
 ﻿@model List<Studenci>
 
-@{
-    Layout = null;
-}
-
 <h1>To jest lista studentów</h1>
 <p>
     @ViewBag.Opis
@@ -16,6 +12,7 @@
             <td>Nazwisko</td>
             <td>Email</td>
             <td>Data urodzenia</td>
+            <td>Szczegoly</td>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +23,10 @@
                 <td>@student.LastName</td>
                 <td>@student.Email</td>
                 <td>@student.BirthDate</td>
+                <td>
+                    <a class="waves-effect waves-light btn-small"
+                       href="/students/details/@student.IdStudent">Wyswietl</a>
+                </td>
             </tr>
         }
     </tbody>

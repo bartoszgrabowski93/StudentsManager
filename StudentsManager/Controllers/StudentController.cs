@@ -37,16 +37,42 @@ namespace StudentsManager.Controllers
             // 2.2 Dane silnie typowane - trzeba dodać do widoku "@model List<Studenci>"
             return View(list);
         }
-            
 
 
 
-           
-        
 
-        public IActionResult Details()
+
+
+
+        public IActionResult Details(int id)
         {
-            return View();
+            // 1. Z pomocą ID pobrać z BD dane studenta
+            // Edit -> Advanced -> Format Document
+            Studenci st = null;
+            if (id == 1)
+            {
+                st = new Studenci
+                {
+                    IdStudent = 1,
+                    Name = "John",
+                    LastName = "Smith",
+                    Email = "jsmith@googlemail.com",
+                    BirthDate = DateTime.Now
+                };
+            }
+            else if (id == 2)
+            {
+                st = new Studenci
+                {
+                    IdStudent = 2,
+                    Name = "Ann",
+                    LastName = "Long",
+                    Email = "ahat@googlemail.com",
+                    BirthDate = DateTime.Now
+                };
+            }
+
+            return View(st);
         }
     }
 }
